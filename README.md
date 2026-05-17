@@ -4,7 +4,7 @@
 
 ```
 taskflow/
-├── index.php                  ← Page principale (login / register)
+├── hibaindex.php                  ← Page principale (login / register)
 ├── config/
 │   ├── database.php           ← Connexion PDO MySQL
 │   └── schema.sql             ← Script de création de la base de données
