@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
 
 require "db.php";
@@ -15,7 +17,7 @@ $client->setRedirectUri("http://localhost/to_do_list_project/google-login.php");
 $client->addScope("email");
 $client->addScope("profile");
 
-if (isset($_GET['code'])) {
+/*if (isset($_GET['code'])) {
     $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
     $client->setAccessToken($token['access_token']);
 
@@ -39,6 +41,61 @@ if (isset($_GET['code'])) {
     $_SESSION["email"] = $email;
 
     header("Location: dashboard.php");
+    exit;
+}*/
+/*if (isset($_GET['code'])) {
+
+    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+
+    // vérifier erreur
+    if (isset($token['error'])) {
+
+        echo "<pre>";
+        print_r($token);
+        echo "</pre>";
+        exit;
+    }
+
+    $client->setAccessToken($token);
+
+    $oauth = new Google_Service_Oauth2($client);
+
+    $userInfo = $oauth->userinfo->get();
+
+    $email = $userInfo->email;
+    $name = $userInfo->name;
+
+    // Vérifier si user existe
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+
+    $user = $stmt->fetch();
+
+    if (!$user) {
+
+        $stmt = $pdo->prepare("
+            INSERT INTO users (name, email, password)
+            VALUES (?, ?, '')
+        ");
+
+        $stmt->execute([$name, $email]);
+    }
+
+    $_SESSION["nom"] = $name;
+    $_SESSION["email"] = $email;
+
+    header("Location: dashboard.php");
+    exit;
+}
+*/
+if (isset($_GET['code'])) {
+
+    $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+
+    echo "<pre>";
+    print_r($token);
+    echo "</pre>";
+
     exit;
 }
 ?>

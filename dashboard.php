@@ -1,14 +1,41 @@
+<?php
+session_start();
+
+/*
+|--------------------------------------------------------------------------
+| SECURITY CHECK
+|--------------------------------------------------------------------------
+*/
+if (!isset($_SESSION['user_name'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$userName = $_SESSION['user_name'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>TaskFlow — Dashboard</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --navy-deep:   #0a1e35;
@@ -43,17 +70,42 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 24px;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
-    .header-actions h2 {
+    .header-left h2 {
       font-family: 'Sora', sans-serif;
       font-size: 28px;
       font-weight: 800;
       color: var(--navy-deep);
     }
 
+    .welcome-text {
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .welcome-text span {
+      color: var(--teal-accent);
+      font-weight: 700;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
     .btn-add {
-      background: linear-gradient(135deg, var(--navy-mid) 0%, var(--teal-accent) 100%);
+      background: linear-gradient(
+        135deg,
+        var(--navy-mid) 0%,
+        var(--teal-accent) 100%
+      );
+
       color: var(--white);
       padding: 12px 20px;
       border-radius: 10px;
@@ -62,12 +114,36 @@
       font-size: 14px;
       font-weight: 700;
       box-shadow: 0 4px 12px rgba(14,52,96,.2);
+      transition: 0.2s;
     }
 
-    /* Search Utility Layout */
+    .btn-add:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-logout {
+      background: #fff5f5;
+      color: var(--error);
+      border: 1.5px solid #f8d7da;
+      padding: 12px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-family: 'Sora', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+
+    .btn-logout:hover {
+      background: var(--error);
+      color: var(--white);
+      border-color: var(--error);
+    }
+
     .search-wrapper {
       margin-bottom: 32px;
     }
+
     .search-input {
       width: 100%;
       padding: 14px 16px;
@@ -80,12 +156,12 @@
       outline: none;
       transition: all 0.2s;
     }
+
     .search-input:focus {
       border-color: var(--teal-accent);
       box-shadow: 0 0 0 3px rgba(26,127,190,.12);
     }
 
-    /* Errors Handling & Fallbacks States */
     .no-tasks {
       display: none;
       text-align: center;
@@ -120,15 +196,16 @@
       box-shadow: 0 6px 20px rgba(10, 30, 53, 0.04);
     }
 
-    /* Completed Strikethrough Engine Style Rules */
     .task-card.completed {
       opacity: 0.55;
       background-color: #fcfdfe;
     }
+
     .task-card.completed h3 {
       text-decoration: line-through;
       color: var(--text-muted);
     }
+
     .task-card.completed .badge {
       background: #e2e8ef !important;
       color: var(--text-muted) !important;
@@ -161,6 +238,7 @@
       display: flex;
       gap: 10px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .badge {
@@ -171,11 +249,25 @@
       text-transform: uppercase;
     }
 
-    .badge-cat { background: var(--input-bg); color: var(--navy-mid); }
-    
-    .priority-high { background: #fff5f5; color: var(--error); }
-    .priority-medium { background: #fffbeb; color: #d97706; }
-    .priority-low { background: #f0fdf4; color: #16a34a; }
+    .badge-cat {
+      background: var(--input-bg);
+      color: var(--navy-mid);
+    }
+
+    .priority-high {
+      background: #fff5f5;
+      color: var(--error);
+    }
+
+    .priority-medium {
+      background: #fffbeb;
+      color: #d97706;
+    }
+
+    .priority-low {
+      background: #f0fdf4;
+      color: #16a34a;
+    }
 
     .due-date {
       font-size: 12px;
@@ -222,159 +314,217 @@
       color: var(--white);
       border-color: var(--error);
     }
+
   </style>
 </head>
+
 <body>
 
 <div class="dashboard">
-  
+
   <div class="header-actions">
-    <h2>My Tasks</h2>
-    <a href="create_task.html" class="btn-add">+ New Task</a>
+
+    <div class="header-left">
+
+      <h2>My Tasks</h2>
+
+      <p class="welcome-text">
+        Welcome,
+        <span>
+          <?php echo htmlspecialchars($userName); ?>
+        </span>
+        👋
+      </p>
+
+    </div>
+
+    <div class="header-buttons">
+
+      <a href="create_task.php" class="btn-add">
+        + New Task
+      </a>
+
+      <a href="logout.php" class="btn-logout">
+        Logout
+      </a>
+
+    </div>
+
   </div>
 
-  <!-- Realtime Input Field Filter Component -->
   <div class="search-wrapper">
-    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search tasks by title or category..." oninput="filtrerTaches()" />
+
+    <input
+      type="text"
+      id="searchInput"
+      class="search-input"
+      placeholder="🔍 Search tasks by title or category..."
+      oninput="filtrerTaches()"
+    />
+
   </div>
 
-  <!-- Conditional Fallback Warning Text Box -->
   <div class="no-tasks" id="noTasksMessage">
     Aucune tâche correspondante trouvée.
   </div>
 
-  <!-- Workspace Shell Container -->
-  <div class="tasks-list" id="tasksContainer">
-    
-    <!-- Task Row Example Item 1 -->
-    <div class="task-card" id="task-1" data-reminder="2026-05-20T14:30">
-      <div class="task-left-section">
-        <input type="checkbox" class="task-checkbox" onchange="toggleTaskComplete('task-1', this)" />
-        <div class="task-info">
-          <h3 class="task-title">Finalize presentation slides</h3>
-          <div class="task-meta">
-            <span class="badge badge-cat">Work</span>
-            <span class="badge priority-high">🔴 High</span>
-            <span class="due-date">📅 May 20, 2026</span>
-            <span class="reminder-tag">⏰ Alert active</span>
-          </div>
-        </div>
-      </div>
-      <div class="task-buttons">
-        <a href="edit_task.html" class="btn-edit">Edit</a>
-        <button class="btn-delete" onclick="confirmerSuppression('task-1')">Delete</button>
-      </div>
-    </div>
+  <!-- EMPTY TASK CONTAINER -->
+  <div class="tasks-list" id="tasksContainer"></div>
 
-    <!-- Task Row Example Item 2 -->
-    <div class="task-card" id="task-2">
-      <div class="task-left-section">
-        <input type="checkbox" class="task-checkbox" onchange="toggleTaskComplete('task-2', this)" />
-        <div class="task-info">
-          <h3 class="task-title">Buy cat food and dynamic litter setup</h3>
-          <div class="task-meta">
-            <span class="badge badge-cat">Personal</span>
-            <span class="badge priority-medium">🟡 Medium</span>
-            <span class="due-date">📅 May 25, 2026</span>
-          </div>
-        </div>
-      </div>
-      <div class="task-buttons">
-        <a href="edit_task.html" class="btn-edit">Edit</a>
-        <button class="btn-delete" onclick="confirmerSuppression('task-2')">Delete</button>
-      </div>
-    </div>
-
-  </div>
 </div>
 
 <script>
-  // --- NOTIFICATION API INITIALIZER ---
-  document.addEventListener('DOMContentLoaded', () => {
-    if ("Notification" in window) {
-      if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-        Notification.requestPermission();
-      }
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  if ("Notification" in window) {
+
+    if (
+      Notification.permission !== "granted" &&
+      Notification.permission !== "denied"
+    ) {
+      Notification.requestPermission();
     }
+
+  }
+
+});
+
+function filtrerTaches() {
+
+  const query = document
+    .getElementById('searchInput')
+    .value
+    .toLowerCase()
+    .trim();
+
+  const cards = document.querySelectorAll('.task-card');
+
+  const errorMessage = document.getElementById('noTasksMessage');
+
+  let visibleCardsCount = 0;
+
+  cards.forEach(card => {
+
+    const title = card
+      .querySelector('.task-title')
+      .innerText
+      .toLowerCase();
+
+    const category = card
+      .querySelector('.badge-cat')
+      .innerText
+      .toLowerCase();
+
+    if (
+      title.includes(query) ||
+      category.includes(query)
+    ) {
+
+      card.style.display = 'flex';
+      visibleCardsCount++;
+
+    } else {
+
+      card.style.display = 'none';
+
+    }
+
   });
 
-  // --- RUNTIME LIVE QUERY TERM SEARCH COMPONENT ---
-  function filtrerTaches() {
-    const query = document.getElementById('searchInput').value.toLowerCase().trim();
-    const cards = document.querySelectorAll('.task-card');
-    const errorMessage = document.getElementById('noTasksMessage');
-    let visibleCardsCount = 0;
+  errorMessage.style.display =
+    visibleCardsCount === 0 ? 'block' : 'none';
 
-    cards.forEach(card => {
-      const title = card.querySelector('.task-title').innerText.toLowerCase();
-      const category = card.querySelector('.badge-cat').innerText.toLowerCase();
+}
 
-      if (title.includes(query) || category.includes(query)) {
-        card.style.display = 'flex';
-        visibleCardsCount++;
-      } else {
-        card.style.display = 'none';
-      }
-    });
+function toggleTaskComplete(taskCardId, checkbox) {
 
-    errorMessage.style.display = visibleCardsCount === 0 ? 'block' : 'none';
+  const taskCard = document.getElementById(taskCardId);
+
+  if (checkbox.checked) {
+    taskCard.classList.add('completed');
+  } else {
+    taskCard.classList.remove('completed');
   }
 
-  // --- STATUS CHANGE TOGGLER STYLES ---
-  function toggleTaskComplete(taskCardId, checkbox) {
+}
+
+function confirmerSuppression(taskCardId) {
+
+  const confirmation = confirm(
+    "Êtes-vous sûr de vouloir supprimer définitivement cette tâche ?"
+  );
+
+  if (confirmation) {
+
     const taskCard = document.getElementById(taskCardId);
-    if (checkbox.checked) {
-      taskCard.classList.add('completed');
-    } else {
-      taskCard.classList.remove('completed');
+
+    if (taskCard) {
+
+      taskCard.remove();
+      filtrerTaches();
+
     }
+
   }
 
-  // --- CONFIRMATION DIALOG MODAL ON FRONTIERS ACTION ---
-  function confirmerSuppression(taskCardId) {
-    const confirmation = confirm("Êtes-vous sûr de vouloir supprimer définitivement cette tâche ?");
-    if (confirmation) {
-      const taskCard = document.getElementById(taskCardId);
-      if (taskCard) {
-        taskCard.remove();
-        filtrerTaches(); 
+}
+
+function verifierRappels() {
+
+  const maintenant = new Date();
+
+  const maintenantFormate =
+    maintenant.getFullYear() + '-' +
+    String(maintenant.getMonth() + 1).padStart(2, '0') + '-' +
+    String(maintenant.getDate()).padStart(2, '0') + 'T' +
+    String(maintenant.getHours()).padStart(2, '0') + ':' +
+    String(maintenant.getMinutes()).padStart(2, '0');
+
+  const taches = document.querySelectorAll('.task-card[data-reminder]');
+
+  taches.forEach(tache => {
+
+    const heureRappel = tache.getAttribute('data-reminder');
+
+    const dejaNotifie = tache.getAttribute('data-notified');
+
+    if (
+      heureRappel === maintenantFormate &&
+      dejaNotifie !== "true"
+    ) {
+
+      const titreTache = tache
+        .querySelector('.task-title')
+        .innerText;
+
+      if (Notification.permission === "granted") {
+
+        new Notification("TaskFlow Reminder! ⏰", {
+
+          body: `Don't forget: "${titreTache}" needs your attention right now.`,
+
+          icon: "https://cdn-icons-png.flaticon.com/512/3114/3114810.png"
+
+        });
+
+      } else {
+
+        alert(`⏰ REMINDER: ${titreTache}`);
+
       }
+
+      tache.setAttribute('data-notified', "true");
+
     }
-  }
 
-  // --- BACKGROUND TIME-CHECK CLOCK WATCHER ---
-  function verifierRappels() {
-    const maintenant = new Date();
-    const maintenantFormate = maintenant.getFullYear() + '-' +
-      String(maintenant.getMonth() + 1).padStart(2, '0') + '-' +
-      String(maintenant.getDate()).padStart(2, '0') + 'T' +
-      String(maintenant.getHours()).padStart(2, '0') + ':' +
-      String(maintenant.getMinutes()).padStart(2, '0');
+  });
 
-    const taches = document.querySelectorAll('.task-card[data-reminder]');
+}
 
-    taches.forEach(tache => {
-      const heureRappel = tache.getAttribute('data-reminder');
-      const dejaNotifie = tache.getAttribute('data-notified');
+setInterval(verifierRappels, 1000);
 
-      if (heureRappel === maintenantFormate && dejaNotifie !== "true") {
-        const titreTache = tache.querySelector('.task-title').innerText;
-
-        if (Notification.permission === "granted") {
-          new Notification("TaskFlow Reminder! ⏰", {
-            body: `Don't forget: "${titreTache}" needs your attention right now.`,
-            icon: "https://cdn-icons-png.flaticon.com/512/3114/3114810.png"
-          });
-        } else {
-          alert(`⏰ REMINDER: ${titreTache}`);
-        }
-        tache.setAttribute('data-notified', "true");
-      }
-    });
-  }
-
-  // Poll system times continuously
-  setInterval(verifierRappels, 1000);
 </script>
+
 </body>
 </html>

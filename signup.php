@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,13 +9,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST["email"]);
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
+    // CHECK IF EMAIL ALREADY EXISTS
     $check = $pdo->prepare("SELECT * FROM users WHERE email = ?");
     $check->execute([$email]);
 
     if ($check->rowCount() > 0) {
+
         $error = "This email already exists.";
+
     } else {
 
+        // INSERT USER
         $sql = "INSERT INTO users(name, email, password)
                 VALUES(?,?,?)";
 
@@ -21,11 +27,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute([$name, $email, $password])) {
 
+            // CREATE SESSION
+            $_SESSION['user_name'] = $name;
+            $_SESSION['user_email'] = $email;
+
+            // REDIRECT TO DASHBOARD
             header("Location: dashboard.php");
             exit();
 
         } else {
+
             $error = "Registration failed.";
+
         }
     }
 }
@@ -34,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
@@ -266,6 +280,24 @@ html, body {
     font-weight: 600;
 }
 
+.pw-toggle{
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:#8a96a3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.pw-toggle:hover{
+    color:#1a7fbe;
+}
+
 @media (max-width: 820px) {
 
     html, body {
@@ -287,23 +319,6 @@ html, body {
     }
 
 }
-.pw-toggle{
-    position:absolute;
-    right:18px;
-    top:50%;
-    transform:translateY(-50%);
-    background:none;
-    border:none;
-    cursor:pointer;
-    color:#8a96a3;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.pw-toggle:hover{
-    color:#1a7fbe;
-}
 
 </style>
 </head>
@@ -322,6 +337,7 @@ html, body {
         </div>
 
         <div class="tagline-container">
+
             <h1>
                 Start organizing<br>
                 your life with<br>
@@ -331,6 +347,7 @@ html, body {
             <p>
                 Create your account and stay productive.
             </p>
+
         </div>
 
         <div class="stats">
@@ -398,51 +415,51 @@ html, body {
                     </div>
                 </div>
 
-  <div class="field">
-    <label>Password</label>
+                <div class="field">
 
-    <div class="input-wrap">
+                    <label>Password</label>
 
-        <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Enter your password"
-            required
-        >
+                    <div class="input-wrap">
 
-        <!-- BOUTON OEIL -->
-        <button
-            type="button"
-            class="pw-toggle"
-            id="pwToggle"
-        >
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            required
+                        >
 
-            <svg
-                id="eyeIcon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                width="18"
-                height="18"
-            >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-            </svg>
+                        <button
+                            type="button"
+                            class="pw-toggle"
+                            id="pwToggle"
+                        >
 
-        </button>
+                            <svg
+                                id="eyeIcon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                width="18"
+                                height="18"
+                            >
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
 
-    </div>
-</div>
+                        </button>
 
-            
+                    </div>
+
+                </div>
+
                 <button class="btn-signup" type="submit">
                     Create Account
                 </button>
-        
+
             </form>
 
             <p class="login-row">
@@ -455,6 +472,7 @@ html, body {
     </div>
 
 </div>
+
 <script>
 
 const pwToggle = document.getElementById('pwToggle');
@@ -480,5 +498,6 @@ pwToggle.addEventListener('click', () => {
 });
 
 </script>
+
 </body>
 </html>
