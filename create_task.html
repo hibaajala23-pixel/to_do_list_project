@@ -188,13 +188,13 @@
     <p>Manage and organize your custom workflow agenda</p>
   </div>
 
-  <form id="taskForm" novalidate>
+  <form id="taskForm" action="save_task.php" method="POST" novalidate>
     
     <!-- Task Title -->
     <div class="field">
       <label for="taskTitle">Task Title</label>
       <div class="input-wrap">
-        <input type="text" id="taskTitle" placeholder="e.g., Prepare university presentation" required />
+        <input type="text" id="taskTitle" name="titre" placeholder="e.g., Prepare university presentation" required />
         <div class="error-text" id="titleError">Please enter a task title.</div>
       </div>
     </div>
@@ -203,7 +203,7 @@
     <div class="field">
       <label for="taskDesc">Description</label>
       <div class="input-wrap">
-        <textarea id="taskDesc" placeholder="Describe the goals or notes for this task..." required></textarea>
+        <textarea id="taskDesc" name="description" placeholder="Describe the goals or notes for this task..." required></textarea>
         <div class="error-text" id="descError">Please provide a brief description.</div>
       </div>
     </div>
@@ -212,12 +212,12 @@
     <div class="field">
       <label for="category">Category</label>
       <div class="input-wrap">
-        <select id="category" required>
+        <select id="category" name="categorie_id" required>
           <option value="" disabled selected>Select a category</option>
-          <option value="work">📝 Work</option>
-          <option value="personal">🏠 Personal</option>
-          <option value="goals">🎯 Goals</option>
-          <option value="shopping">🛒 Shopping</option>
+          <option value="1">📝 Work</option>
+          <option value="2">🏠 Personal</option>
+          <option value="3">🎯 Goals</option>
+          <option value="4">🛒 Shopping</option>
         </select>
         <div class="error-text" id="categoryError">Please select a category.</div>
       </div>
@@ -229,7 +229,7 @@
       <div class="field">
         <label for="dueDate">Due Date</label>
         <div class="input-wrap">
-          <input type="date" id="dueDate" required />
+          <input type="date" id="dueDate" name="date_limite" required />
           <div class="error-text" id="dateError">Please select a deadline.</div>
         </div>
       </div>
@@ -238,11 +238,11 @@
       <div class="field">
         <label for="priority">Priority</label>
         <div class="input-wrap">
-          <select id="priority" required>
+          <select id="priority" name="priorite" required>
             <option value="" disabled selected>Select priority</option>
-            <option value="low">🟢 Low</option>
-            <option value="medium">🟡 Medium</option>
-            <option value="high">🔴 High</option>
+            <option value="Faible">🟢 Low</option>
+            <option value="Moyenne">🟡 Medium</option>
+            <option value="Haute">🔴 High</option>
           </select>
           <div class="error-text" id="priorityError">Please choose a priority level.</div>
         </div>
@@ -298,9 +298,8 @@
     validateField(priority, 'priorityError');
 
     if (isValid) {
-      alert("Success! Task structure validated perfectly on the frontend.");
-      window.location.href = "dashboard.php";
-    }
+  this.submit();
+}
   });
 </script>
 </body>
