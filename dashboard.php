@@ -373,7 +373,7 @@ body{
 
         <div class="buttons">
 
-            <a href="create_task.html" class="btn-add">
+            <a href="create_task.php" class="btn-add">
                 + New Task
             </a>
 
