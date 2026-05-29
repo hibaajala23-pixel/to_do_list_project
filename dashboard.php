@@ -43,7 +43,87 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
+/* ================= MOBILE RESPONSIVE ================= */
 
+@media (max-width:768px){
+
+    body{
+        padding:20px 12px;
+    }
+
+    .dashboard{
+        width:100%;
+    }
+
+    .header-actions{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .buttons{
+        width:100%;
+        flex-direction:column;
+    }
+
+    .btn-add,
+    .btn-logout{
+        width:100%;
+        text-align:center;
+    }
+
+    .task-card{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .task-actions{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+    }
+
+    .btn-edit,
+    .btn-delete{
+        flex:1;
+        text-align:center;
+    }
+
+    .task-meta{
+        gap:8px;
+    }
+
+    .search-input{
+        font-size:13px;
+    }
+
+    select.search-input{
+        margin-bottom:0;
+    }
+
+}
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width:480px){
+
+    .header-actions h2{
+        font-size:24px;
+    }
+
+    .task-title{
+        font-size:16px;
+    }
+
+    .task-description{
+        font-size:13px;
+    }
+
+    .task-card{
+        padding:16px;
+    }
+
+}
 *{
     margin:0;
     padding:0;
@@ -262,6 +342,12 @@ body{
     accent-color:var(--error);
     cursor:pointer;
 }
+.task-description{
+    margin-top:6px;
+    color:var(--text-muted);
+    font-size:14px;
+    line-height:1.5;
+}
 </style>
 </head>
 
@@ -306,14 +392,48 @@ body{
         placeholder="🔍 Search tasks..."
         oninput="filtrerTaches()"
     >
+      <div style="display:flex; gap:15px; margin-bottom:25px;">
 
+    <select id="categoryFilter"
+            class="search-input"
+            onchange="filtrerTaches()">
+
+        <option value="">📁 All Categories</option>
+        <option value="Work">📝 Work</option>
+        <option value="Personal">🏠 Personal</option>
+        <option value="Goals">🎯 Goals</option>
+        <option value="Shopping">🛒 Shopping</option>
+
+    </select>
+
+    <select id="priorityFilter"
+            class="search-input"
+            onchange="filtrerTaches()">
+
+        <option value="">🚦 All Priorities</option>
+        <option value="Haute">🔴 High</option>
+        <option value="Moyenne">🟡 Medium</option>
+        <option value="Faible">🟢 Low</option>
+
+    </select>
+
+</div>
     <?php if(count($tasks) > 0): ?>
 
     <div class="tasks-list" id="tasksContainer">
-
+<div id="noResult" class="no-task" style="display:none;">
+    ❌ No task found.
+</div>
         <?php foreach($tasks as $task): ?>
 
-       <div class="task-card <?= $task['is_done'] == 1 ? 'completed' : '' ?>">
+       <div class="task-card <?= $task['is_done'] == 1 ? 'completed' : '' ?>"
+       data-category="<?=
+        $task['categorie_id'] == 1 ? 'Work' :
+        ($task['categorie_id'] == 2 ? 'Personal' :
+        ($task['categorie_id'] == 3 ? 'Goals' : 'Shopping'))
+     ?>"
+
+     data-priority="<?= htmlspecialchars($task['priorite']) ?>">
 
     <input type="checkbox" class="checkbox-complete" onchange="toggleTask(this, <?= $task['id'] ?>)" <?= $task['is_done'] == 1 ? 'checked' : '' ?>>
 
@@ -321,7 +441,9 @@ body{
                 <h3 class="task-title">
                     <?= htmlspecialchars($task['titre']) ?>
                 </h3>
-
+                <p class="task-description">
+                <?= htmlspecialchars($task['description']) ?>
+                </p>
                 <div class="task-meta">
 
 <span class="badge-cat">
@@ -370,6 +492,7 @@ body{
 ?>
 ">
 
+
 <?php
     if($task['priorite'] == 'Haute'){
         echo '🔴';
@@ -416,8 +539,8 @@ body{
 
     <?php else: ?>
 
-    <div class="no-task">
-        No tasks found.
+    <div id="noResult" class="no-task" style="display:none;">
+         ❌ No tasks found.
     </div>
 
     <?php endif; ?>
@@ -433,7 +556,15 @@ function filtrerTaches(){
         .value
         .toLowerCase();
 
+    const selectedCategory =
+        document.getElementById('categoryFilter').value;
+
+    const selectedPriority =
+        document.getElementById('priorityFilter').value;
+
     const cards = document.querySelectorAll('.task-card');
+
+    let visibleCount = 0;
 
     cards.forEach(card => {
 
@@ -442,15 +573,48 @@ function filtrerTaches(){
             .innerText
             .toLowerCase();
 
-        if(title.includes(query)){
+        const category = card.dataset.category;
+
+        const priority = card.dataset.priority;
+
+        const matchSearch =
+            title.includes(query);
+
+        const matchCategory =
+            selectedCategory === "" ||
+            category === selectedCategory;
+
+        const matchPriority =
+            selectedPriority === "" ||
+            priority === selectedPriority;
+
+        if(
+            matchSearch &&
+            matchCategory &&
+            matchPriority
+        ){
+
             card.style.display = 'flex';
-        }
-        else{
+            visibleCount++;
+
+        } else {
+
             card.style.display = 'none';
         }
 
     });
 
+    const noResult =
+        document.getElementById('noResult');
+
+    if(visibleCount === 0){
+
+        noResult.style.display = 'block';
+
+    } else {
+
+        noResult.style.display = 'none';
+    }
 }
 function toggleTask(checkbox){
 
@@ -489,4 +653,4 @@ function toggleTask(checkbox, taskId){
 }
 </script>
 </body>
-</html>
+</html> 
