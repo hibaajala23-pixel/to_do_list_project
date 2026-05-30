@@ -1,9 +1,3 @@
-INSERT INTO users
-(name,email,password)
-VALUES
-('Hayat', 'hayatZak@gmail.com', '123456'),
-
-('Sara','sara@gmail.com', '123456');
 
 ALTER TABLE tasks
 ADD reminder_sent TINYINT(1) DEFAULT 0;
