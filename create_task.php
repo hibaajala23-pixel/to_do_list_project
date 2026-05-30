@@ -253,7 +253,7 @@
     <div class="field">
       <label for="reminderDate">Set System Reminder Notification (Optional)</label>
       <div class="input-wrap">
-        <input type="datetime-local" id="reminderDate" />
+        <input type="datetime-local" id="reminderDate" name="reminder_datetime" />
         <div class="error-text" id="reminderError">Please select a future timestamp.</div>
       </div>
     </div>

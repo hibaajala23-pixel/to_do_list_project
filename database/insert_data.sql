@@ -5,8 +5,13 @@ VALUES
 
 ('Sara','sara@gmail.com', '123456');
 
+ALTER TABLE tasks
+ADD reminder_sent TINYINT(1) DEFAULT 0;
 
 ALTER TABLE tasks ADD is_done TINYINT(1) DEFAULT 0;
+
+ALTER TABLE tasks
+ADD reminder_datetime DATETIME NULL;
 
 INSERT INTO categories (id, nom_categorie) VALUES
 (1, 'Work'),
@@ -14,7 +19,11 @@ INSERT INTO categories (id, nom_categorie) VALUES
 (3, 'Goals'),
 (4, 'Shopping');
 
+-- PASSWORD RESET SYSTEM
 
+ALTER TABLE users
+ADD reset_token VARCHAR(255) DEFAULT NULL,
+ADD reset_expires DATETIME DEFAULT NULL;
 
 INSERT INTO tasks
 (titre, description, statut, priorite, date_limite, user_id, categorie_id)
