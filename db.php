@@ -1,14 +1,14 @@
 <?php
-$host = "localhost";
-$dbname = "taskflow";
-$user = "root";
-$pass = "";
+$host = "sql111.infinityfree.com";
+$dbname = "if0_42051541_taskflow";
+$username = "if0_42051541";
+$password = "mFMpCUNmhO4";
 
 try {
     $pdo = new PDO(
         "mysql:host=$host;dbname=$dbname;charset=utf8",
-        $user,
-        $pass
+        $username,
+        $password
     );
 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
