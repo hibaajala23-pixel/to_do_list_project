@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $_SESSION["error"] = "This email does not exist";
 
-        header("Location: hibaindex.php");
+        header("Location: connexion.php");
         exit();
     }
 
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $_SESSION["error"] = "Incorrect password";
 
-        header("Location: hibaindex.php");
+        header("Location: connexion.php");
         exit();
     }
 

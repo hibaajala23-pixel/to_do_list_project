@@ -20,10 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // ===== DATABASE =====
 
-        $host = "localhost";
-        $dbname = "taskflow";
-        $user = "root";
-        $pass = "";
+        $host = "sql111.infinityfree.com";
+        $dbname = "if0_42051541_taskflow";
+        $user = "if0_42051541";
+        $pass = "mFMpCUNmhO4";
 
         try {
 
@@ -432,7 +432,7 @@ button:hover{
 
     <?php endif; ?>
 
-    <a href="hibaindex.php" class="back">
+    <a href="connexion.php" class="back">
         ← Back to Login
     </a>
 

@@ -8,7 +8,7 @@ require "db.php";
 |--------------------------------------------------------------------------
 */
 if (!isset($_SESSION['user_id'])) {
-    header("Location: hibaindex.php");
+    header("Location: connexion.php");
     exit();
 }
 

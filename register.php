@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt = $pdo->prepare($sql);
 
     if ($stmt->execute([$nom, $email, $password])) {
-        header("Location: hibaindex.php");
+        header("Location: connexion.php");
         exit;
     } else {
         echo "Erreur inscription";

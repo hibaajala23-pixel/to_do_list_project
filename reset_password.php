@@ -12,10 +12,10 @@ if (!isset($_GET["token"])) {
 $token = $_GET["token"];
 
 // ===== DATABASE =====
-$host = "localhost";
-$dbname = "taskflow";
-$user = "root";
-$pass = "";
+$host = "sql111.infinityfree.com";
+$dbname = "if0_42051541_taskflow";
+$user = "if0_42051541";
+$pass = "mFMpCUNmhO4";
 
 try {
 
@@ -91,7 +91,7 @@ try {
             $message = "
                 Password updated successfully.<br><br>
 
-                <a href='hibaindex.php'
+                <a href='connexion.php'
                 style='color:#2563EB;font-weight:bold;text-decoration:none;'>
                 Go to Login
                 </a>
@@ -353,7 +353,7 @@ button:hover{
 
     <?php endif; ?>
 
-    <a href="hibaindex.php" class="back">
+    <a href="connexion.php" class="back">
         ← Back to Login
     </a>
 
