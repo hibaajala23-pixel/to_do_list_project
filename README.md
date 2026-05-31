@@ -32,7 +32,7 @@ TaskFlow est une application web de gestion de tâches développée en PHP, MySQ
 ### 1. Cloner le projet
 
 ```bash
-git clone https://github.com/VOTRE-USERNAME/taskflow.git
+git clone https://github.com/hibaajala23-pixel/taskflow.git
 ```
 
 ### 2. Importer la base de données
@@ -62,10 +62,10 @@ db.php
 et renseigner :
 
 ```php
-$host = "localhost";
-$dbname = "taskflow";
-$username = "root";
-$password = "";
+$host = "sql111.infinityfree.com";
+$dbname = "if0_42051541_taskflow";
+$username = "if0_42051541";
+$password = "mFMpCUNmhO4";
 ```
 
 ### 5. Configurer PHPMailer
@@ -76,11 +76,11 @@ Dans le fichier :
 send_reminders.php
 ```
 
-renseigner :
+renseigner :s
 
 ```php
-$mail->Username = "votre_email@gmail.com";
-$mail->Password = "votre_app_password";
+$mail->Username = "h.chrorou@gmail.com";
+$mail->Password = "nphx bouz qryd hakj";
 ```
 
 ### 6. Lancer le projet
@@ -96,12 +96,15 @@ puis ouvrir :
 ```text
 http://localhost/taskflow
 ```
+## Live Demo
+
+https://taskflow-app.infinityfree.me
 
 ## Structure du projet
 
 ```text
 taskflow/
-│
+├──  index.html
 ├── dashboard.php
 ├── create_task.php
 ├── save_task.php
@@ -114,6 +117,7 @@ taskflow/
 ├── db.php
 ├── composer.json
 ├── composer.lock
+├── connexion.html
 └── README.md
 
  Auteur
