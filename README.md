@@ -1,7 +1,12 @@
 # TaskFlow
 
 TaskFlow est une application web de gestion de tâches développée en PHP, MySQL, HTML, CSS et JavaScript.
+Cette application a pour objectif organiser les taches que ce soient personnelle, professionnelle etc.. 
 
+# Membre de l'equipe
+HIBA AJALA : developpeur
+CHROROU HIBA : Scrum Master
+HAYAT ZAK : Product owner
 ## Fonctionnalités
 
 * Inscription et connexion utilisateur
@@ -31,96 +36,102 @@ TaskFlow est une application web de gestion de tâches développée en PHP, MySQ
 
 ### 1. Cloner le projet
 
-```bash
 git clone https://github.com/hibaajala23-pixel/taskflow.git
-```
 
 ### 2. Importer la base de données
 
 Importer le fichier :
 
-```sql
 database.sql
-```
 
 dans phpMyAdmin.
 
 ### 3. Installer les dépendances
 
-```bash
 composer install
-```
 
 ### 4. Configurer la base de données
 
 Modifier le fichier :
 
-```php
 db.php
-```
 
 et renseigner :
 
-```php
 $host = "sql111.infinityfree.com";
 $dbname = "if0_42051541_taskflow";
 $username = "if0_42051541";
 $password = "mFMpCUNmhO4";
-```
 
 ### 5. Configurer PHPMailer
 
 Dans le fichier :
 
-```php
 send_reminders.php
-```
 
-renseigner :s
+renseigner :
 
-```php
 $mail->Username = "h.chrorou@gmail.com";
 $mail->Password = "nphx bouz qryd hakj";
-```
 
 ### 6. Lancer le projet
 
 Placer le projet dans :
 
-```text
 htdocs/
-```
 
 puis ouvrir :
 
-```text
 http://localhost/taskflow
-```
+
 ## Live Demo
 
 https://taskflow-app.infinityfree.me
 
 ## Structure du projet
 
-```text
 taskflow/
-├──  index.html
-├── dashboard.php
-├── create_task.php
-├── save_task.php
-├── edit_task.php
-├── delete_task.php
-├── login.php
-├── register.php
-├── logout.php
-├── send_reminders.php
-├── db.php
-├── composer.json
-├── composer.lock
-├── connexion.html
-└── README.md
+├──  README.md
+├── .gitignore
+├── docs/
+    ├──Cahier de charge.pdf
+    ├── WBS-Gantt & Backlog.pdf
+├── src/
+    ├── frontend/
+        ├── index.html
+        ├── connexion.html
+        ├── signup.php
+        ├── forgot_password.php
+        ├── create_task.php
+        ├── dashboard.php
+        ├── edit_task.php
+    ├── backend/
+        ├── login.php
+        ├── db.php
+        ├── save_task.php
+        ├── register.php
+        ├── delete_task.php
+        ├── send_reminders.php
+        ├── toggle_task.php
+        ├── edit_task.php
+        ├── logout.php
+        ├──reset_password.php
+    ├──database/
+        ├── categories.sql
+        ├── comments.sql
+        ├── insert_data.sql
+        ├── notifications.sql
+        ├── schema.sql
+        ├── tags.sql
+        ├── task_tags.sql
+        ├── tasks.sql
+        ├── users.sql
 
- Auteur
 
-Développé par [CHROROU HIBA , HIBA AJALA , HAYAT ZAK]
+Développé par :
+
+HIBA AJALA 
+HAYAT ZAK
+CHROROU HIBA 
+ 
 
